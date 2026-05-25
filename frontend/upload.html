@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Certificate | AI Interview</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">AI<span>Interview</span></div>
+    <a href="dashboard.html">Dashboard</a>
+</div>
+
+<section class="hero">
+    <div class="card">
+        <h2>Upload Certificate</h2>
+        <p>Upload PDF, JPG, or PNG certificate files.</p>
+
+        <input type="file" id="certificate" accept=".pdf,.jpg,.jpeg,.png">
+
+        <button onclick="uploadFile()">Upload Certificate</button>
+
+        <p id="message" class="message"></p>
+    </div>
+</section>
+
+<script>
+async function uploadFile() {
+    const fileInput = document.getElementById("certificate");
+    const message = document.getElementById("message");
+
+    if (!fileInput.files[0]) {
+        message.innerText = "Please select a file";
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("certificate", fileInput.files[0]);
+
+    try {
+        const response = await fetch("http://localhost:5001/api/uploads", {
+            method: "POST",
+            body: formData
+        });
+
+        const data = await response.json();
+        message.innerText = data.message || "Certificate uploaded successfully";
+    } catch (error) {
+        message.innerText = "Upload failed. Backend not connected";
+    }
+}
+</script>
+
+</body>
+</html>

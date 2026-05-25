@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | AI Interview</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">AI<span>Interview</span></div>
+    <a href="index.html">Home</a>
+</div>
+
+<section class="hero">
+    <div class="card">
+        <h2>Welcome Back</h2>
+        <p>Login to continue your interview preparation journey.</p>
+
+        <input type="email" id="email" placeholder="Enter Email">
+        <input type="password" id="password" placeholder="Enter Password">
+
+        <button onclick="loginUser()">Login</button>
+
+        <p id="message" class="message"></p>
+
+        <a class="link" href="register.html">
+            Don't have an account? Register
+        </a>
+    </div>
+</section>
+
+<script>
+async function loginUser() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const message = document.getElementById("message");
+
+    if (email === "" || password === "") {
+        message.innerText = "Please enter email and password";
+        return;
+    }
+
+    try {
+        const response = await fetch("http://localhost:5001/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (data.token) {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("role", data.role);
+            localStorage.setItem("name", data.name);
+
+            message.innerText = "Login successful";
+
+            setTimeout(function () {
+                if (data.role === "admin") {
+                    window.location.href = "admin.html";
+                } else {
+                    window.location.href = "dashboard.html";
+                }
+            }, 500);
+
+        } else {
+            message.innerText = data.message || "Invalid email or password";
+        }
+
+    } catch (error) {
+        console.log(error);
+        message.innerText = "Server connection failed";
+    }
+}
+</script>
+
+</body>
+</html>

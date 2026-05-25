@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | AI Interview</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">AI<span>Interview</span></div>
+    <a href="index.html">Home</a>
+</div>
+
+<section class="hero">
+    <div class="card">
+        <h2>Create Account</h2>
+        <p>Start your AI interview preparation today.</p>
+
+        <input type="text" id="name" placeholder="Full name">
+        <input type="email" id="email" placeholder="Email address">
+        <input type="password" id="password" placeholder="Password">
+
+        <button onclick="registerUser()">Register</button>
+
+        <p id="message" class="message"></p>
+
+        <a class="link" href="login.html">Already have an account? Login</a>
+    </div>
+</section>
+
+<script>
+async function registerUser() {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const message = document.getElementById("message");
+
+    if (!name || !email || !password) {
+        message.innerText = "Please fill all fields";
+        return;
+    }
+
+    try {
+        const response = await fetch("http://localhost:5001/api/auth/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await response.json();
+        message.innerText = data.message || "Registration completed";
+
+        if (response.ok) {
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1200);
+        }
+    } catch (error) {
+        message.innerText = "Server not connected";
+    }
+}
+</script>
+
+</body>
+</html>

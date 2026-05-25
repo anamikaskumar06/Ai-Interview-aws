@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Answer Evaluation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">AI<span>Interview</span></div>
+    <a href="dashboard.html">Dashboard</a>
+</div>
+
+<section class="hero">
+    <div class="card">
+        <h2>Interview Practice</h2>
+
+        <p id="question">
+            Tell me about yourself.
+        </p>
+
+        <textarea id="answer" placeholder="Type your answer here..." rows="6"></textarea>
+
+        <button onclick="evaluateAnswer()">Submit Answer</button>
+        <button class="btn-outline" onclick="nextQuestion()">Next Question</button>
+
+        <p id="feedback" class="message"></p>
+    </div>
+</section>
+
+<script>
+const questions = [
+    {
+        question: "Tell me about yourself.",
+        keywords: ["name", "education", "skills", "goal", "experience"]
+    },
+    {
+        question: "Why should we hire you?",
+        keywords: ["skills", "hardworking", "learning", "team", "company"]
+    },
+    {
+        question: "What are your strengths?",
+        keywords: ["communication", "problem", "team", "time", "learning"]
+    },
+    {
+        question: "What is HTML?",
+        keywords: ["hypertext", "markup", "web", "structure", "page"]
+    },
+    {
+        question: "What is DBMS?",
+        keywords: ["database", "data", "manage", "store", "retrieve"]
+    }
+];
+
+let currentIndex = 0;
+
+function evaluateAnswer() {
+    const answer = document.getElementById("answer").value.toLowerCase();
+    const feedback = document.getElementById("feedback");
+
+    if (answer.trim() === "") {
+        feedback.innerText = "Please type your answer first.";
+        return;
+    }
+
+    let score = 0;
+    const currentKeywords = questions[currentIndex].keywords;
+
+    currentKeywords.forEach(keyword => {
+        if (answer.includes(keyword)) {
+            score++;
+        }
+    });
+
+    let percentage = Math.round((score / currentKeywords.length) * 100);
+
+    if (percentage >= 80) {
+        feedback.innerText = "Excellent answer! Score: " + percentage + "%";
+    } else if (percentage >= 50) {
+        feedback.innerText = "Good answer, but add more important points. Score: " + percentage + "%";
+    } else {
+        feedback.innerText = "Needs improvement. Add more relevant keywords and examples. Score: " + percentage + "%";
+    }
+}
+
+function nextQuestion() {
+    currentIndex++;
+
+    if (currentIndex >= questions.length) {
+        currentIndex = 0;
+    }
+
+    document.getElementById("question").innerText = questions[currentIndex].question;
+    document.getElementById("answer").value = "";
+    document.getElementById("feedback").innerText = "";
+}
+</script>
+
+</body>
+</html>
