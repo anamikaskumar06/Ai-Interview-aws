@@ -178,7 +178,7 @@ async function loadStats(){
     try{
 
         const response = await fetch(
-            "http://localhost:5001/api/admin/stats"
+            "http://3.111.246.43:5001/api/admin/stats"
         );
 
         const data = await response.json();
@@ -207,7 +207,7 @@ async function loadUsers(){
     try{
 
         const response = await fetch(
-            "http://localhost:5001/api/admin/users"
+            "http://3.111.246.43:5001/api/admin/users"
         );
 
         const users = await response.json();
@@ -275,7 +275,7 @@ async function deleteUser(id){
     try{
 
         await fetch(
-            `http://localhost:5001/api/admin/users/${id}`,
+            `http://3.111.246.43:5001/api/admin/users/${id}`,
             {
                 method:"DELETE"
             }
@@ -310,7 +310,7 @@ async function editUser(id,name,email,role){
     try{
 
         await fetch(
-            `http://localhost:5001/api/admin/users/${id}`,
+            `http://3.111.246.43:5001/api/admin/users/${id}`,
             {
                 method:"PUT",
 
@@ -345,7 +345,7 @@ async function loadUploads(){
     try{
 
         const response = await fetch(
-            "http://localhost:5001/api/admin/uploads"
+            "http://3.111.246.43:5001/api/admin/uploads"
         );
 
         const uploads = await response.json();
